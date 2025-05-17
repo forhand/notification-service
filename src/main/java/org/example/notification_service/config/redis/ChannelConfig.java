@@ -9,12 +9,12 @@ import org.springframework.data.redis.listener.ChannelTopic;
 public class ChannelConfig {
 
   @Bean
-  public ChannelTopic userSubscriptionEventChannel(@Value("${spring.data.redis.channels.subscription.user_subscription.name}") String topicName) {
+  public ChannelTopic subscribedEventChannel(@Value("${spring.data.redis.channels.subscription.subscribed.name}") String topicName) {
     return new ChannelTopic(topicName);
   }
 
   @Bean
-  public ChannelTopic userUnubscriptionEventChannel(@Value("${spring.data.redis.channels.subscription.user_unsubscription.name}") String topicName) {
+  public ChannelTopic unsubscribedEventChannel(@Value("${spring.data.redis.channels.subscription.unsubscribed.name}") String topicName) {
     return new ChannelTopic(topicName);
   }
 

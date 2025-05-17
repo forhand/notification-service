@@ -11,10 +11,10 @@ spring:
       host: localhost
       channels:
         subscription:
-          user_subscription:
-            name: user_subscription
-          user_unsubscription:
-            name: user_unsubscription
+          subscribed:
+            name: subscribed
+          unsubscribed:
+            name: unsubscribed
 
   mail:
     host: smtp.gmail.com
@@ -57,4 +57,4 @@ client:
     base-path: /api/users
 
 server:
-  port: 8083
+  port: 8084

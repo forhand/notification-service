@@ -1,4 +1,4 @@
-package org.example.notification_service.listener.subscription;
+package org.example.notification_service.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.notification_service.client.UserServiceClient;
 import org.example.notification_service.dto.user.UserDto;
-import org.example.notification_service.listener.ChannelAwareListener;
 import org.example.notification_service.messaging.MessageBuilder;
 import org.example.notification_service.service.NotificationService;
 import org.springframework.data.redis.connection.Message;
@@ -32,10 +31,12 @@ public abstract class AbstractEventListener<T> implements ChannelAwareListener {
   public void onMessage(Message message, byte[] pattern) {
     log.info("Received event from channel: " + channelTopic.getTopic());
     T event = parseEvent(message);
-    long userId = getUserId(event);
-    UserDto user = userServiceClient.getUser(userId);
+
+    UserDto actor = userServiceClient.getUser(getActorId(event));
+    UserDto receiver = userServiceClient.getUser(getReceiverId(event));
     String text = messageBuilder.buildMessage(event, Locale.getDefault());
-    notifyUser(user, text);
+
+    notifyUser(actor, text);
     log.info("Notification has been sent");
   }
 
@@ -43,7 +44,9 @@ public abstract class AbstractEventListener<T> implements ChannelAwareListener {
     return channelTopic;
   }
 
-  protected abstract long getUserId(T event);
+  protected abstract long getReceiverId(T event);
+
+  protected abstract long getActorId(T event);
 
   private T parseEvent(Message message) {
     try {
