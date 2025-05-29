@@ -19,9 +19,9 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: shkayevrss@gmail.com
-    from: shkayevrss@gmail.com
-    password: rhpw oszn wdxn ziyd
+    username: ${MAIL_USERNAME}
+    from: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     protocol: smtp
     default-encoding: UTF-8
     subject: Notification from App
